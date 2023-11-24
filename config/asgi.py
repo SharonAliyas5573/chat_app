@@ -1,18 +1,8 @@
-"""
-ASGI config
- 
-It exposes the ASGI callable as a module-level variable named ``application``.
- 
-For more information on this file, see
-https://docs.djangoproject.com/en/dev/howto/deployment/asgi/
- 
-"""
 import os
 import sys
 from pathlib import Path
  
 from django.core.asgi import get_asgi_application
- 
 # This allows easy placement of apps within the interior
 
  
@@ -29,11 +19,11 @@ django_application = get_asgi_application()
 from config import routing  # noqa isort:skip
  
 from channels.routing import ProtocolTypeRouter, URLRouter  # noqa isort:skip
- 
+from chat_app.chats.middleware import TokenAuthMiddleware
  
 application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
-        "websocket": URLRouter(routing.websocket_urlpatterns),
+        "websocket": TokenAuthMiddleware(URLRouter(routing.websocket_urlpatterns)),
     }
 )
