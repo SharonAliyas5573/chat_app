@@ -4,6 +4,8 @@ from .models import Conversation
 from .api.serializers import MessageSerializer
 import json
 from uuid import UUID
+from .models import Message
+from chat_app.users.models import User
 
 class UUIDEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -41,6 +43,11 @@ class ChatConsumer(JsonWebsocketConsumer):
             self.conversation_name,
             self.channel_name,
         )
+        messages = self.conversation.messages.all().order_by("-timestamp")[0:50]
+        self.send_json({
+                "type": "last_50_messages",
+                "messages": MessageSerializer(messages, many=True).data,
+            })
 
     def disconnect(self, code):
         print("Disconnected!")
@@ -66,14 +73,6 @@ class ChatConsumer(JsonWebsocketConsumer):
                 self.conversation_name,
                 {
                     "type": "chat_message_echo",
-                    "name": content["name"],
-                    "message": content["message"],
-                },
-            )
-            async_to_sync(self.channel_layer.group_send)(
-                self.conversation_name,
-                {
-                    "type": "chat_message_echo",
                     "name": self.user.username,
                     "message": MessageSerializer(message).data,
                 },
@@ -81,7 +80,7 @@ class ChatConsumer(JsonWebsocketConsumer):
         return super().receive_json(content, **kwargs)
 
     def chat_message_echo(self, event):
-        print(event)
+        
         self.send_json(event)
 
     @classmethod
