@@ -52,11 +52,10 @@ export function Navbar() {
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li className="flex">
                 <Link
-                  to="/conversations"
+                  to="/"
                   className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
                   aria-current="page"
                 >
-                  Active Conversations
                   {unreadMessageCount > 0 && (
                     <span className="ml-2 inline-flex items-center justify-center h-6 w-6 rounded-full bg-white">
                       <span className="text-xs font-medium leading-none text-gray-800">
@@ -86,7 +85,7 @@ export function Navbar() {
                 </li>
               ) : (
                 <>
-                  <span className="text-white">Logged in: {user.username}</span>
+                  <span className="text-white ">{user.username}</span>
                   <button
                     className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
                     onClick={logout}
