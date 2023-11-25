@@ -4,9 +4,9 @@ from uuid import UUID
 from asgiref.sync import async_to_sync
 from django.contrib.auth import get_user_model
 from channels.generic.websocket import JsonWebsocketConsumer
-from conversa_dj.chats.api.serializers import MessageSerializer
+from chat_app.chats.api.serializers import MessageSerializer
 
-from conversa_dj.chats.models import Conversation, Message
+from chat_app.chats.models import Conversation, Message
 
 
 User = get_user_model()
