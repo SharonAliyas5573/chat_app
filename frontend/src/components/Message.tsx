@@ -1,25 +1,26 @@
 import { useContext } from "react";
- 
 import { AuthContext } from "../contexts/AuthContext";
 import { MessageModel } from "../models/Message";
- 
+
 export function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
- 
+
 export function Message({ message }: { message: MessageModel }) {
   const { user } = useContext(AuthContext);
- 
+
   function formatMessageTimestamp(timestamp: string) {
     const date = new Date(timestamp);
     return date.toLocaleTimeString().slice(0, 5);
   }
- 
+
   return (
     <li
       className={classNames(
         "mt-1 mb-1 flex",
-        user!.username === message.to_user.username ? "justify-start" : "justify-end"
+        user!.username === message.to_user.username
+          ? "justify-start"
+          : "justify-end"
       )}
     >
       <div
@@ -34,7 +35,7 @@ export function Message({ message }: { message: MessageModel }) {
             className="ml-2"
             style={{
               fontSize: "0.6rem",
-              lineHeight: "1rem"
+              lineHeight: "1rem",
             }}
           >
             {formatMessageTimestamp(message.timestamp)}
