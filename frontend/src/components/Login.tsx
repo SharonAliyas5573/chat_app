@@ -27,7 +27,7 @@ export function Login() {
       setSubmitting(false);
     },
   });
-
+// eslint-disable-next-line
   useEffect(() => {
     if (user) {
       navigate("/");
