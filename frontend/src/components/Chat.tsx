@@ -13,7 +13,7 @@ export function Chat() {
     const [message, setMessage] = useState("");
     const { user } = useContext(AuthContext);
     const [name, setName] = useState("");
-
+    const [participants, setParticipants] = useState<string[]>([]);
 
 
     const { readyState, sendJsonMessage } = useWebSocket(
@@ -38,6 +38,14 @@ export function Chat() {
                     case "chat_message_echo":
                         setMessageHistory((prev: any) => prev.concat(data.message));
                         break;
+                    case "user_join":
+                            setParticipants((pcpts: string[]) => {
+                              if (!pcpts.includes(data.user)) {
+                                return [...pcpts, data.user];
+                              }
+                              return pcpts;
+                            });
+                            break;
                     case "last_50_messages":
                         setMessageHistory(data.messages);
                         break;
